@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-plus/dist/index.css">
+    <style>.login{width:400px;margin:100px auto;padding:30px;border:1px solid #eee;border-radius:8px}</style>
+</head>
+<body>
+<div id="app">
+    <div class="login">
+        <h2>新闻系统登录</h2>
+        <el-form :model="form">
+            <el-form-item label="账号"><el-input v-model="form.username"></el-input></el-form-item>
+            <el-form-item label="密码"><el-input v-model="form.password" type="password"></el-input></el-form-item>
+            <el-button type="primary" @click="login" style="width:100%">登录</el-button>
+            <el-button style="width:100%;margin-top:10px" @click="goRegister">去注册</el-button>
+        </el-form>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/element-plus/dist/index.full.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+const { createApp } = Vue;
+axios.defaults.withCredentials = true;
+createApp({
+    data(){return{form:{username:"",password:""}}},
+    methods:{
+        async login(){
+            const res = await axios.post("http://localhost:8081/user/login",this.form);
+            if(res.data.code === 200){alert("登录成功");location.href="index.html"}
+            else alert(res.data.msg)
+        },
+        goRegister(){location.href="register.html"}
+    }
+}).use(ElementPlus).mount('#app')
+</script>
+</body>
+</html>
